@@ -1,0 +1,871 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kebun Binatang Nusantara - Modern Redesign</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        /* --- GLOBAL & THEME SETUP --- */
+        :root {
+            --primary-green: #2d5a27;
+            --accent-blue: #1d4ed8;
+            --light-bg: #f8fafc;
+            --card-border: #e2e8f0;
+            --text-dark: #1e293b;
+            --text-muted: #64748b;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background-color: var(--light-bg);
+            color: var(--text-dark);
+            overflow-x: hidden;
+        }
+
+        /* --- STICKY PROMO BADGE --- */
+        .promo-badge {
+            position: fixed;
+            bottom: 25px;
+            left: 25px;
+            background: linear-gradient(135deg, #ff5722, #e64a19);
+            color: white;
+            padding: 12px 24px;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 0.85rem;
+            z-index: 1000;
+            box-shadow: 0 4px 20px rgba(230, 74, 25, 0.4);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        /* --- NAVIGATION (UPDATED: HANYA BERANDA, KOLEKSI SATWA, TIKET) --- */
+        header {
+            background-color: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(8px);
+            position: sticky;
+            top: 0;
+            z-index: 999;
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.05);
+        }
+
+        .navbar {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 20px;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 700;
+            color: var(--primary-green);
+            font-size: 1.4rem;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 30px;
+            list-style: none;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-dark);
+            font-weight: 500;
+            font-size: 0.95rem;
+            transition: color 0.2s;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary-green);
+        }
+
+        .btn-tiket-nav {
+            background-color: var(--primary-green);
+            color: white !important;
+            padding: 10px 24px;
+            border-radius: 25px;
+            font-weight: 600;
+            box-shadow: 0 4px 12px rgba(45, 90, 39, 0.2);
+            transition: all 0.2s !important;
+        }
+
+        .btn-tiket-nav:hover {
+            background-color: #1e3d1a;
+            transform: translateY(-1px);
+        }
+
+        /* --- TAMPILAN 1: HERO SECTION --- */
+        .hero {
+            background: linear-gradient(rgba(0, 0, 0, 0.55), rgba(0, 0, 0, 0.4)), 
+                        url('https://images.unsplash.com/photo-1534567153574-2b12153a87f0?auto=format&fit=crop&w=1920&q=80') no-repeat center center/cover;
+            height: 65vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            color: white;
+            padding: 20px;
+        }
+
+        .hero h1 {
+            font-size: 3.2rem;
+            font-weight: 700;
+            margin-bottom: 15px;
+            letter-spacing: 1px;
+            text-shadow: 0 4px 10px rgba(0,0,0,0.5);
+        }
+
+        .hero p {
+            font-size: 1.1rem;
+            max-width: 700px;
+            margin-bottom: 30px;
+            font-weight: 300;
+            text-shadow: 0 2px 5px rgba(0,0,0,0.5);
+        }
+
+        .btn-cta {
+            background: linear-gradient(135deg, #ff9800, #f57c00);
+            color: white;
+            text-decoration: none;
+            padding: 14px 38px;
+            border-radius: 50px;
+            font-weight: 600;
+            box-shadow: 0 5px 15px rgba(245, 124, 0, 0.4);
+            transition: all 0.2s;
+        }
+
+        .btn-cta:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 7px 20px rgba(245, 124, 0, 0.5);
+        }
+
+        /* --- SECTION STANDARDS --- */
+        section {
+            max-width: 1200px;
+            margin: 80px auto;
+            padding: 0 20px;
+        }
+
+        .section-title {
+            text-align: center;
+            color: var(--primary-green);
+            font-size: 2.2rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .section-subtitle {
+            text-align: center;
+            color: var(--text-muted);
+            margin-bottom: 45px;
+            font-size: 1rem;
+        }
+
+        /* --- TAMPILAN 2: DAFTAR SATWA --- */
+        .search-container {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 40px;
+        }
+
+        .search-box {
+            width: 100%;
+            max-width: 450px;
+            padding: 14px 24px;
+            border: 1px solid var(--card-border);
+            border-radius: 50px;
+            font-size: 0.95rem;
+            outline: none;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.02);
+            transition: all 0.2s;
+        }
+
+        .search-box:focus {
+            border-color: var(--primary-green);
+            box-shadow: 0 4px 15px rgba(45, 90, 39, 0.1);
+        }
+
+        .satwa-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 30px;
+        }
+
+        .satwa-card {
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.03);
+            border: 1px solid var(--card-border);
+            display: flex;
+            flex-direction: column;
+            transition: transform 0.3s;
+        }
+
+        .satwa-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .satwa-img {
+            width: 100%;
+            height: 230px;
+            object-fit: cover;
+        }
+
+        .satwa-info {
+            padding: 25px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .satwa-info h3 {
+            color: var(--primary-green);
+            font-size: 1.3rem;
+            margin-bottom: 10px;
+        }
+
+        .satwa-desc {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            line-height: 1.6;
+            margin-bottom: 25px;
+        }
+
+        .btn-detail {
+            display: block;
+            text-align: center;
+            background-color: #f1f5f9;
+            color: var(--primary-green);
+            text-decoration: none;
+            padding: 12px;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: all 0.2s;
+        }
+
+        .btn-detail:hover {
+            background-color: var(--primary-green);
+            color: white;
+        }
+
+        /* --- TAMPILAN 3: MAP --- */
+        .map-wrapper {
+            background: linear-gradient(145deg, #ffffff, #f1f5f9);
+            border-radius: 24px;
+            padding: 30px;
+            border: 1px solid var(--card-border);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.04);
+        }
+
+        .map-graphic-container {
+            width: 100%;
+            height: 350px;
+            background: radial-gradient(circle at 20% 30%, #e2f0d9 0%, #c5e1a5 100%);
+            border-radius: 16px;
+            position: relative;
+            overflow: hidden;
+            border: 2px solid #fff;
+            box-shadow: inset 0 0 20px rgba(0,0,0,0.05);
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .map-graphic-container::before {
+            content: '';
+            position: absolute;
+            width: 80%;
+            height: 4px;
+            border-top: 3px dashed #78909c;
+            top: 50%;
+            left: 10%;
+            z-index: 1;
+        }
+
+        .map-pin {
+            background: white;
+            padding: 12px 20px;
+            border-radius: 50px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 600;
+            font-size: 0.85rem;
+            z-index: 2;
+            border: 1px solid #aedd94;
+        }
+
+        .map-pin i { color: #d32f2f; }
+        .map-footer-info {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 15px;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            padding: 0 10px;
+        }
+
+        /* --- TAMPILAN 4: TABEL HARGA AKSEN BIRU --- */
+        .table-card {
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 4px 25px rgba(0,0,0,0.02);
+            border: 1px solid var(--card-border);
+        }
+
+        .table-responsive {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+        }
+
+        th {
+            background-color: var(--accent-blue);
+            color: white;
+            padding: 18px 24px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        td {
+            padding: 18px 24px;
+            border-bottom: 1px solid var(--card-border);
+            font-size: 0.95rem;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        tr:hover td {
+            background-color: #f8fafc;
+        }
+
+        /* --- TAMPILAN 5: FORMULIR PEMBELIAN --- */
+        .form-card {
+            background: white;
+            border-radius: 24px;
+            padding: 40px;
+            box-shadow: 0 4px 30px rgba(0,0,0,0.02);
+            border: 1px solid var(--card-border);
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+        }
+
+        .form-full-width {
+            grid-column: span 2;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .form-group label {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--text-dark);
+        }
+
+        .form-group input {
+            padding: 14px;
+            border: 1px solid var(--card-border);
+            border-radius: 12px;
+            font-size: 0.95rem;
+            outline: none;
+            background-color: #f8fafc;
+            transition: all 0.2s;
+        }
+
+        .form-group input:focus {
+            border-color: var(--primary-green);
+            background-color: white;
+            box-shadow: 0 0 0 4px rgba(45, 90, 39, 0.1);
+        }
+
+        .button-action-container {
+            display: flex;
+            gap: 20px;
+            margin-top: 35px;
+            max-width: 900px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .btn-submit-form {
+            flex: 3;
+            background-color: var(--primary-green);
+            color: white;
+            border: none;
+            padding: 16px;
+            border-radius: 14px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(45, 90, 39, 0.2);
+            transition: all 0.2s;
+        }
+
+        .btn-submit-form:hover {
+            background-color: #1e3d1a;
+        }
+
+        .btn-wa-redirect {
+            flex: 1;
+            background-color: #0284c7;
+            color: white;
+            text-decoration: none;
+            padding: 16px;
+            border-radius: 14px;
+            font-size: 1rem;
+            font-weight: 600;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(2, 132, 199, 0.2);
+            transition: all 0.2s;
+        }
+
+        .btn-wa-redirect:hover {
+            background-color: #0369a1;
+        }
+
+        /* --- TAMPILAN 6: ULASAN & FAQ --- */
+        .twin-layout {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            max-width: 1200px;
+            margin: 60px auto;
+        }
+
+        .review-card, .faq-card {
+            background: white;
+            border-radius: 24px;
+            padding: 35px;
+            border: 1px solid var(--card-border);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.02);
+        }
+
+        .block-title {
+            color: var(--primary-green);
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin-bottom: 25px;
+            border-bottom: 2px solid #f1f5f9;
+            padding-bottom: 10px;
+        }
+
+        .review-item {
+            margin-bottom: 25px;
+            border-bottom: 1px solid #f1f5f9;
+            padding-bottom: 20px;
+        }
+
+        .review-item:last-child {
+            margin-bottom: 0;
+            border-bottom: none;
+            padding-bottom: 0;
+        }
+
+        .stars {
+            color: #ffb703;
+            margin-bottom: 8px;
+            font-size: 0.9rem;
+        }
+
+        .review-text {
+            font-size: 0.9rem;
+            color: #334155;
+            line-height: 1.6;
+            font-style: italic;
+        }
+
+        .review-author {
+            display: block;
+            margin-top: 8px;
+            font-weight: 600;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        .faq-item {
+            margin-bottom: 20px;
+        }
+
+        .faq-q {
+            font-weight: 600;
+            color: var(--primary-green);
+            font-size: 0.95rem;
+            margin-bottom: 6px;
+        }
+
+        .faq-a {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            line-height: 1.6;
+        }
+
+        /* --- FOOTER --- */
+        footer {
+            background-color: #1e293b;
+            color: #94a3b8;
+            padding: 60px 20px 20px 20px;
+            font-size: 0.9rem;
+        }
+
+        .footer-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 2fr 1fr 1.5fr;
+            gap: 50px;
+            margin-bottom: 40px;
+        }
+
+        .footer-col h4 {
+            color: white;
+            font-size: 1.1rem;
+            margin-bottom: 20px;
+        }
+
+        .footer-col p {
+            line-height: 1.6;
+        }
+
+        .footer-col ul {
+            list-style: none;
+        }
+
+        .footer-col ul li {
+            margin-bottom: 12px;
+        }
+
+        .footer-col ul li a {
+            color: #94a3b8;
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        .footer-col ul li a:hover {
+            color: white;
+        }
+
+        .footer-bottom {
+            max-width: 1200px;
+            margin: 0 auto;
+            border-top: 1px solid #334155;
+            padding-top: 25px;
+            text-align: center;
+            font-size: 0.8rem;
+        }
+
+        /* --- RESPONSIVE MEDIA QUERIES --- */
+        @media (max-width: 968px) {
+            .twin-layout {
+                grid-template-columns: 1fr;
+            }
+            .footer-container {
+                grid-template-columns: 1fr;
+                gap: 30px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+            .form-full-width {
+                grid-column: span 1;
+            }
+            .button-action-container {
+                flex-direction: column;
+            }
+            .hero h1 {
+                font-size: 2.2rem;
+            }
+            .nav-links {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="promo-badge">
+        <i class="fa-solid fa-tags"></i> PROMO: DISKON 5% weekend!
+    </div>
+
+    <header>
+        <div class="navbar">
+            <div class="logo">
+                <i class="fa-solid fa-leaf"></i> KBN NUSANTARA
+            </div>
+            <ul class="nav-links">
+                <li><a href="#">Beranda</a></li>
+                <li><a href="#koleksi">Koleksi Satwa</a></li>
+                <li><a href="#pesan" class="btn-tiket-nav">Tiket</a></li>
+            </ul>
+        </div>
+    </header>
+
+    <section class="hero" style="max-width: 100%; margin-top: 0; margin-bottom: 0;">
+        <h1>KEBUN BINATANG NUSANTARA</h1>
+        <p>Selamat datang di kebun binatang kami yang sangat bagus dan indah dan menyenangkan untuk seluruh keluarga anda bersama anak-anak dan orang tua dan semua orang yang ingin melihat satwa.</p>
+        <a href="#pesan" class="btn-cta">Beli Tiket Sekarang</a>
+    </section>
+
+    <section id="koleksi">
+        <h2 class="section-title">Daftar Satwa Kami</h2>
+        <p class="section-subtitle">Kenali lebih dekat ragam fauna eksotis dari seluruh belahan dunia</p>
+        
+        <div class="search-container">
+            <input type="text" id="satwaSearch" class="search-box" placeholder="Cari nama satwa di sini...">
+        </div>
+
+        <div class="satwa-grid" id="satwaGrid">
+            <div class="satwa-card">
+                <img src="https://images.unsplash.com/photo-1546182990-dffeafbe841d?auto=format&fit=crop&w=600&q=80" alt="Singa Afrika" class="satwa-img">
+                <div class="satwa-info">
+                    <div>
+                        <h3>Singa Afrika</h3>
+                        <p class="satwa-desc">Hewan buas yang gagah, hidup berkelompok, dan mendiami area savana terbuka Afrika.</p>
+                    </div>
+                    <a href="#" class="btn-detail">Lihat Detail Info</a>
+                </div>
+            </div>
+
+            <div class="satwa-card">
+                <img src="https://images.unsplash.com/photo-1581888227599-779811939961?auto=format&fit=crop&w=600&q=80" alt="Gajah Sumatra" class="satwa-img">
+                <div class="satwa-info">
+                    <div>
+                        <h3>Anjing</h3>
+                        <p class="satwa-desc">Anjing berbulu cokelat yang setia, cerdas, dan ramah, menghadirkan kehangatan serta menjadi sahabat dekat manusia dalam berbagai aktivitas sehari-hari.</p>
+                    </div>
+                    <a href="#" class="btn-detail">Lihat Detail Info</a>
+                </div>
+            </div>
+
+            <div class="satwa-card">
+                <img src="https://images.unsplash.com/photo-1547721064-da6cfb341d50?auto=format&fit=crop&w=600&q=80" alt="Jerapah" class="satwa-img">
+                <div class="satwa-info">
+                    <div>
+                        <h3>Jerapah</h3>
+                        <p class="satwa-desc">Hewan tertinggi di dunia dengan leher panjang ikonik untuk menjangkau daun tinggi segar.</p>
+                    </div>
+                    <a href="#" class="btn-detail">Lihat Detail Info</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="peta">
+        <h2 class="section-title">Peta Informasi Zona Satwa</h2>
+        <p class="section-subtitle">Gunakan panduan peta wilayah bawah ini untuk mempermudah petualangan Anda</p>
+        <div class="map-wrapper">
+            <div class="map-graphic-container">
+                <div class="map-pin"><i class="fa-solid fa-location-dot"></i> Zona Carnivora</div>
+                <div class="map-pin"><i class="fa-solid fa-location-dot"></i> Zona Herbivora</div>
+                <div class="map-pin"><i class="fa-solid fa-location-dot"></i> Area Aviary</div>
+            </div>
+            <div class="map-footer-info">
+                <span><i class="fa-solid fa-map-pin"></i> Lokasi Saat Ini: Gerbang Utama (Sisi Selatan)</span>
+                <span>Peta fisik cetak tersedia gratis di Loket Tiket Masuk.</span>
+            </div>
+        </div>
+    </section>
+
+    <section id="harga">
+        <h2 class="section-title">Harga Tiket Masuk Resmi 2026</h2>
+        <p class="section-subtitle">Daftar harga tiket masuk transparan berdasarkan kategori pengunjung</p>
+        <div class="table-card">
+            <div class="table-responsive">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Kategori Pengunjung</th>
+                            <th>Hari Kerja (Weekday)</th>
+                            <th>Akhir Pekan (Weekend)</th>
+                            <th>Keterangan</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Anak-anak (3 - 12 Tahun)</strong></td>
+                            <td>Rp45.000</td>
+                            <td>Rp65.000</td>
+                            <td>Wajib didampingi orang dewasa</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Dewasa (Umum)</strong></td>
+                            <td>Rp60.000</td>
+                            <td>Rp80.000</td>
+                            <td>Tarif normal</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Lansia (> 60 Tahun)</strong></td>
+                            <td>Rp40.000</td>
+                            <td>Rp55.000</td>
+                            <td>Wajib menunjukkan KTP elektronik</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
+    <section id="pesan">
+        <h2 class="section-title">Formulir Pembelian Tiket Online</h2>
+        <p class="section-subtitle">Amankan tiket Anda tanpa antre lama di gerbang masuk utama</p>
+        
+        <div class="form-card">
+            <form id="ticketForm">
+                <div class="form-grid">
+                    <div class="form-group form-full-width">
+                        <label>Nama Lengkap (Sesuai KTP)</label>
+                        <input type="text" placeholder="Masukkan nama lengkap Anda..." required>
+                    </div>
+                    <div class="form-group">
+                        <label>Jumlah Tiket Dewasa</label>
+                        <input type="number" min="1" value="1" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Jumlah Tiket Anak</label>
+                        <input type="number" min="0" value="0" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Tanggal Kunjungan</label>
+                        <input type="date" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Alamat Email Aktif</label>
+                        <input type="email" placeholder="contoh@email.com" required>
+                    </div>
+                    <div class="form-group form-full-width">
+                        <label>Nomor WhatsApp (+62)</label>
+                        <input type="tel" placeholder="81234567xxx" required>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <div class="button-action-container">
+            <button type="submit" form="ticketForm" class="btn-submit-form">Proses Pembayaran Tiket</button>
+            <a href="#" class="btn-wa-redirect"><i class="fa-brands fa-whatsapp"></i> Hubungi CS via WA</a>
+        </div>
+    </section>
+
+    <div class="twin-layout">
+        <div class="review-card">
+            <h3 class="block-title">Ulasan Pengunjung</h3>
+            
+            <div class="review-item">
+                <div class="stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-regular fa-star"></i></div>
+                <p class="review-text">"Recommended untuk keluarga, pasti balik lagi."</p>
+                <span class="review-author">- Rudi P.</span>
+            </div>
+
+            <div class="review-item">
+                <div class="stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
+                <p class="review-text">"Sangat bersih, anak-anak suka sekali melihat gajah dan jerapah. Tempat edukasi keluarga terbaik!"</p>
+                <span class="review-author">- Budi S.</span>
+            </div>
+
+            <div class="review-item">
+                <div class="stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
+                <p class="review-text">"Fasilitas pemesanan tiket online barunya sangat membantu, tidak perlu antre panjang di lokasi."</p>
+                <span class="review-author">- Ani W.</span>
+            </div>
+        </div>
+
+        <div class="faq-card">
+            <h3 class="block-title">Pertanyaan Umum (FAQ)</h3>
+            <div class="faq-item">
+                <p class="faq-q">Apakah boleh membawa makanan dari luar?</p>
+                <p class="faq-a">Tidak diperbolehkan demi menjaga kebersihan lingkungan kandang alami satwa.</p>
+            </div>
+            <div class="faq-item">
+                <p class="faq-q">Apakah ada fasilitas toilet ramah difabel?</p>
+                <p class="faq-a">Ya, toilet ramah difabel tersedia lengkap di area pusat informasi dan kantin utama.</p>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="footer-container">
+            <div class="footer-col">
+                <h4>Tentang Kami</h4>
+                <p>Kebun Binatang Nusantara berkomitmen dalam bidang konservasi, edukasi, dan rekreasi alam ramah lingkungan terbaik di Indonesia.</p>
+            </div>
+            <div class="footer-col">
+                <h4>Layanan</h4>
+                <ul>
+                    <li><a href="#pesan">Tiket Online</a></li>
+                    <li><a href="#">Sewa Buggy Car</a></li>
+                    <li><a href="#koleksi">Edukasi Satwa</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Hubungi Kami</h4>
+                <p>Jl. Konservasi No. 21, Nusantara<br>info@kbnnusantara.id<br>021-1234567</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            &copy; 2026 Kebun Binatang Nusantara. Seluruh Hak Cipta Dilindungi.
+        </div>
+    </footer>
+
+    <script>
+        document.getElementById('satwaSearch').addEventListener('input', function() {
+            const val = this.value.toLowerCase();
+            const cards = document.querySelectorAll('.satwa-card');
+            
+            cards.forEach(card => {
+                const title = card.querySelector('h3').textContent.toLowerCase();
+                if(title.includes(val)) {
+                    card.style.display = "flex";
+                } else {
+                    card.style.display = "none";
+                }
+            });
+        });
+    </script>
+</body>
+</html>
